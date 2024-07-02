@@ -1,3 +1,4 @@
-export function SendAPIRequest() {
-    return "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAABHklEQVR42uyYsa3EIBBEx3LgkBIoxaXdL82lUAIhgcV+LRw+QJwv/F/HTGSjF62WYXZBURT132Uk6wCwnViev4FAD+TPhwJY4yL16VTAJiIKWL+JAg8RT+AWyJUk8AGACQTugOfd3NWa7i7v7EAx893lSr51+8mBNgjET0nhawETsEZoocQDS4T8EBgB2FIHlVPtqMM2HUWgEGfxqLCmnttd7VEEXq9e6bMUvAmMAe25iCtHASLi+stJoNLujGjzaVHN6NX7buA10loJeaI9rPo6gQ648qTL8SCtAYaBc3agmnnPJZu5aSpJoAE0eOuBelRzNwkMlgOSsqd9vz2YGaj2cprMy+dswDXSprSdgjeMJ9ADFEVRf6PfAAAA//9UaB06jqPwJAAAAABJRU5ErkJggg=="
+export async function SendAPIRequest(url: string, size: string) {
+    let bytes = await fetch("https://qrapi.fly.dev/?url=youtube.com&size=256")
+    return "data:image/png;base64," + bytes
 }

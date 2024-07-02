@@ -1,15 +1,22 @@
-'use client'
-import QRImage from "@/components/qrImage";
+"use client";
+import { SendAPIRequest } from "@/api/sendAPIRequest";
 import { useState } from "react";
 
 export default function Home() {
+  const url = document.getElementById("url")!
+  const size = document.getElementById("size")!
+
   const [generated, setState] = useState(false);
+
   const qrGenerated = () => {
-    setState(true)
-  }
+    setState(true);
+  };
+
   return (
     <>
-      <h1 className="font-bold text-center text-4xl pt-16">Crate a QR code</h1>
+      <h1 className="font-bold text-center text-4xl pt-16">
+        Generate a QR code
+      </h1>
       <div className="place-items-center">
         <form>
           <input
@@ -17,9 +24,19 @@ export default function Home() {
             name="url"
             id="url"
             placeholder="https://example.com"
-            pattern="https://.*"
             size={30}
             required
+          />
+          <input
+            type="number"
+            name="size of QR"
+            id="size"
+            placeholder="Size of image"
+            defaultValue={256}
+            size={30}
+            required
+            max="1024"
+            min="256"
           />
         </form>
         <button
@@ -31,11 +48,9 @@ export default function Home() {
       </div>
       {generated && (
         <div>
-          <QRImage />
+          <img src={SendAPIRequest(url.toString(), size.toString()).toString()} alt="QR code" />
         </div>
       )}
     </>
   );
 }
-
-
