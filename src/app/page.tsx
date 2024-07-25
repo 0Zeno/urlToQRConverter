@@ -1,56 +1,47 @@
-"use client";
-import { SendAPIRequest } from "@/api/sendAPIRequest";
-import { useState } from "react";
+import { fetchQRCode } from "@/api/fetchQRCode";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
-export default function Home() {
-  const url = document.getElementById("url")!
-  const size = document.getElementById("size")!
-
-  const [generated, setState] = useState(false);
-
-  const qrGenerated = () => {
-    setState(true);
-  };
+export default async function Home() {
+  let url = "zenoleonardi.no";
+  let size = 256;
+  const bytes = await fetchQRCode(url, size);
+  const image = "data:image/png;base64, " + bytes;
 
   return (
-    <>
-      <h1 className="font-bold text-center text-4xl pt-16">
-        Generate a QR code
-      </h1>
-      <div className="place-items-center">
-        <form>
-          <input
-            type="url"
-            name="url"
-            id="url"
-            placeholder="https://example.com"
-            size={30}
-            required
-          />
-          <input
-            type="number"
-            name="size of QR"
-            id="size"
-            placeholder="Size of image"
-            defaultValue={256}
-            size={30}
-            required
-            max="1024"
-            min="256"
-          />
-        </form>
-        <button
-          className="border bg-blue-600 rounded border-blue-600 hover:bg-blue-500 p-1 font-medium"
-          onClick={qrGenerated}
-        >
-          Generate
-        </button>
-      </div>
-      {generated && (
-        <div>
-          <img src={SendAPIRequest(url.toString(), size.toString()).toString()} alt="QR code" />
-        </div>
-      )}
-    </>
+    <div className="flex justify-center items-center h-screen">
+      <Card className="w-[350px]">
+        <CardHeader className="text-3xl font-semibold pb-4 text-center">
+          QR kode generator
+        </CardHeader>
+        <CardContent>
+          <div className="rounded-lg border bg-card text-card-foreground shadow p-4 w-[300px]">
+            <img id="qrCode" src={image} alt="image" />
+          </div>
+          <div className="flex flex-col pt-4">
+            <form >
+              <Input
+                type="url"
+                className="shadow py-2 px-3 mb-3"
+                id="url"
+                placeholder="http://example.com"
+                required
+              ></Input>
+              <Input
+                type="number"
+                className="shadow py-2 px-3 mb-3 "
+                id="size"
+                placeholder="256"
+                min={64}
+                max={1028}
+                defaultValue={256}
+              ></Input>
+              <Button type="submit">Generate</Button>
+            </form>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
